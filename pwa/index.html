@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA DEMO</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1a73e8">
+    <link rel="icon" href="/icons/icon-192.png">
+</head>
+<body>
+    
+    <button id="imageBtn">Images</button>
+    <div id="imageContainer"></div>
+
+    <script defer>
+        // Existing image fetch logic (kept)
+        document.querySelector("#imageBtn").addEventListener("click", async function() {
+            try {
+            let imagesResponse = await fetch("https://boringapi.com/api/v1/photos", { method: 'GET' });
+            let images = await imagesResponse.json();
+            images = images.photos || [];
+            let imagesElements = images.map(i => `<img src="${i.url}" alt="Image" style="max-width:200px; margin:10px;">`).join('');
+            document.querySelector("#imageContainer").innerHTML = imagesElements;
+            } catch (err) {
+            console.error(err);
+            document.querySelector("#imageContainer").innerHTML = '<p>Unable to load images (offline?)</p>';
+            }
+        });
+
+        // Service worker registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').then(reg => {
+                console.log('SW registered:', reg);
+            }).catch(err => console.error('SW register failed:', err));
+            });
+        }
+
+        // Handle install prompt (optional)
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.createElement('button');
+            installBtn.textContent = 'Install App';
+            installBtn.style.marginLeft = '10px';
+            installBtn.addEventListener('click', async () => {
+            installBtn.remove();
+            deferredPrompt.prompt();
+            const choice = await deferredPrompt.userChoice;
+            console.log('Install choice:', choice);
+            deferredPrompt = null;
+            });
+            document.body.insertBefore(installBtn, document.getElementById('imageContainer'));
+        });
+    </script>
+
+
+</body>
+</html>
