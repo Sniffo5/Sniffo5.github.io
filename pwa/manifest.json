@@ -1,7 +1,7 @@
 {
   "name": "PWA Demo",
   "short_name": "PWA Demo",
-  "start_url": "/",
+  "start_url": "https://sniffo5.github.io/pwa/",
   "display": "standalone",
   "background_color": "#209CEE",
   "theme_color": "#ffffff",
@@ -18,3 +18,4 @@
     }
   ]
 }
+
