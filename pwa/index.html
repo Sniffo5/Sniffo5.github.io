@@ -15,17 +15,12 @@
 
     <script defer>
         // Existing image fetch logic (kept)
-        document.querySelector("#imageBtn").addEventListener("click", async function() {
-            try {
+       document.querySelector("#imageBtn").addEventListener("click", async function() {
             let imagesResponse = await fetch("https://boringapi.com/api/v1/photos", { method: 'GET' });
             let images = await imagesResponse.json();
             images = images.photos || [];
             let imagesElements = images.map(i => `<img src="${i.url}" alt="Image" style="max-width:200px; margin:10px;">`).join('');
             document.querySelector("#imageContainer").innerHTML = imagesElements;
-            } catch (err) {
-            console.error(err);
-            document.querySelector("#imageContainer").innerHTML = '<p>Unable to load images (offline?)</p>';
-            }
         });
 
         // Service worker registration
@@ -59,4 +54,5 @@
 
 </body>
 </html>
+
 
