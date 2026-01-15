@@ -1,11 +1,11 @@
 const STATIC_CACHE = 'pwa-demo-static-v1';
 const DYNAMIC_CACHE = 'pwa-demo-dynamic-v1';
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
 ];
 
 // Pre-cache app shell
@@ -48,7 +48,7 @@ self.addEventListener('fetch', event => {
       }).catch(() => {
         // If offline and no cache, return fallback for navigation
         if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
+          return caches.match('./index.html');
         }
         return new Response('Offline', { status: 503, statusText: 'Offline' });
       });
